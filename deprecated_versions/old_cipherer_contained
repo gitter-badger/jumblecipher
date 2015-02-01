@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+# Written by zippynk on BitBucket. https://bitbucket.org/zippynk/jumblecipher
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+print "This is an old version, stored here for compatibility reasons. Please use a newer version."
+
+import random
+phraseToCipher = raw_input("Phrase? ")
+outphrase = ""
+numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+letters2 = []
+for i in range(26):
+	i2 = random.randint(0,len(letters)-1)
+	letters2.append(letters[i2])
+	letters.pop(i2)
+for i in phraseToCipher:
+	for i2 in range(len(letters2)):
+		if i.lower() == letters2[i2]:
+			outphrase = outphrase +str(i2+1)
+	if not str(i.lower()) in letters2:
+		if i in numbers:
+			print "ERROR: Phrase cannot contain a number. Leaving out the number - you may want to re-run cipherer with the number spelled out or removed completely."
+		else:
+			outphrase = outphrase +str(i)
+print "Key: " +str(letters2)
+print "Ciphered phrase: " +outphrase

@@ -1,0 +1,75 @@
+#!/usr/bin/python
+
+# Written by zippynk on BitBucket. https://bitbucket.org/zippynk/jumblecipher
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+print "This is an old version, stored here for compatibility reasons. Please use a newer version."
+
+in_brackets = False
+numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+string = raw_input("Encoded Phrase? ")
+broken_down_encoded_phrase = ""
+i = 0
+for i_throwaway in range(len(string)):
+	if string[i] in numbers: # If the current character is a number
+		if len(string) > i+1: # If it's safe to check for the next characer
+			if string[i+1] in numbers: # If the current and next characters are numbers
+				if in_brackets == True: # If the current and next characters are numbers, and we are currently in brackets.
+					if int(string[i-1] +string[i]) > 26 or string[i-1] == '0': # If the current character is a number, and so is the next character, we are currently in brackets, and it's time to end them.
+						broken_down_encoded_phrase = broken_down_encoded_phrase +']|' # End the brackets.
+						in_brackets = False # Disable the brackets boolean.
+						if int(string[i] +string[i+1]) < 27: # If the current character is a number, and so is the next character, we are currently not in brackets (although we just broke out of them), and it's time to enter them.
+							broken_down_encoded_phrase = broken_down_encoded_phrase +'[' +string[i] # Start the brackets and append the current number.
+							in_brackets = True # Officially enable bracket mode.
+							i += 1 # Increase the index.
+						else: # If the current character is a number, and so is the next character, we are currently not in brackets (although we just broke out of them), and we need to stay out of them.
+							broken_down_encoded_phrase = broken_down_encoded_phrase +string[i] # Append the current item, entering brackets.
+							i += 1 # Increase the index.
+					else: # If the current character is a number, and so is the next character, we are currently in brackets, and we need to stay in them.
+						broken_down_encoded_phrase = broken_down_encoded_phrase +string[i] # Append the current item, without leaving the brackets.
+						i += 1 # Increase the index.
+				else: # If the current and next characters are numbers, and we are not currently in brackets.
+					if int(string[i] +string[i+1]) < 27: # If the current character is a number, and so is the next character, we are currently not in brackets, and it's time to enter them.
+						broken_down_encoded_phrase = broken_down_encoded_phrase +'|[' +string[i] # Start the brackets and append the current number.
+						in_brackets = True # Officially enable bracket mode.
+						i += 1 # Increase the index.
+					else: # If the current character is a number, and so is the next character, we are currently not in brackets, and we need to stay out of them.
+						broken_down_encoded_phrase = broken_down_encoded_phrase +'|' +string[i] # Append the current item, entering brackets.
+						i += 1 # Increase the index.
+			else: # If the current character is a number, but the next character isn't.
+				if in_brackets == True: # If the current character is a number, but the next character isn't, and we're currently in brackets
+	                                if int(string[i-1] +string[i]) > 26: # If the current character is a number, the next character isn't, we're currently in brackets, and it's time to break out of the brackets that we're currently in.
+	                                        broken_down_encoded_phrase = broken_down_encoded_phrase +']|' +string[i] # Append the current item, then close the brackets
+	                                        in_brackets = False # Officialize the closing of the brackets
+	                                        i += 1 # Increase the index.
+	                                else:
+	                                        broken_down_encoded_phrase = broken_down_encoded_phrase +string[i] # Append the current item, keeping the brackets open
+	                                        i += 1 # Increase the index.
+				else: # If we are currently dealing with a number and a non-number after it, and we are outside of brackets. (This means that we CANNOT enter a series of brackets, since there's no number it could be combined with.)
+					broken_down_encoded_phrase = broken_down_encoded_phrase +"|" +string[i] # Append it.
+					i += 1 # Increase the index.
+		else: # If we're dealing with the last character, and it is a number
+			if in_brackets == True: # If the current character is a number, but the next character isn't, and we're currently in brackets
+                                if int(string[i-1] +string[i]) > 26: # If the current character is a number, the next character isn't, we're currently in brackets, and it's time to break out of the brackets that we're currently in.
+                                        broken_down_encoded_phrase = broken_down_encoded_phrase +']|' +string[i] # Append the current item, then close the brackets
+                                        in_brackets = False # Officialize the closing of the brackets
+                                        i += 1 # Increase the index.
+                                else:
+                                        broken_down_encoded_phrase = broken_down_encoded_phrase +string[i] # Append the current item, keeping the brackets open
+                                        i += 1 # Increase the index.
+			else: # If we are currently dealing with the last character, which is a number, and we are outside of brackets. (This means that we CANNOT enter a series of brackets, since there's no number it could be combined with.)
+				broken_down_encoded_phrase = broken_down_encoded_phrase +"|" +string[i] # Append it.
+				i += 1 # Increase the index.
+	else: # If we are currently dealing with a non-number.
+		if in_brackets == True: # If we are currently dealing with a non-number and we are currently in brackets.
+			in_brackets = False # Disable the brackets boolean.
+			broken_down_encoded_phrase = broken_down_encoded_phrase +"]|" +string[i] # Put a closing bracket, and append the current character
+			i += 1 # Increase the index.
+		else: # If we are currently dealing with a non number and not in brackets.
+			broken_down_encoded_phrase = broken_down_encoded_phrase +"|" +string[i] # Append it.
+			i += 1 # Increase the index.
+if in_brackets == True:
+	broken_down_encoded_phrase = broken_down_encoded_phrase +"]"
+print broken_down_encoded_phrase
