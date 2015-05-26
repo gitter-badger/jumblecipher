@@ -1,5 +1,7 @@
 #jumblecipher
 
+[![Join the chat at https://gitter.im/zippynk/jumblecipher](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippynk/jumblecipher?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 
 jumblecipher is a python library and a set of command line tools for encoding and assisting with the decoding of jumbled Caesar ciphers of the letters of the alphabet to the numbers 1-26.
